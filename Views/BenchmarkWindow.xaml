@@ -1,0 +1,180 @@
+<Window x:Class="PCBooster.Views.BenchmarkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Benchmark — PC Booster Pro"
+        Height="580" Width="780"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="16"/>
+            <Setter Property="Margin"          Value="0,0,0,10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,14">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="⚡" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <StackPanel>
+                    <TextBlock Text="System Benchmark" Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                    <TextBlock x:Name="SubLabel" Text="Tests CPU integer, floating-point, multi-thread, and RAM bandwidth"
+                               Foreground="#9FA8C0" FontSize="12"/>
+                </StackPanel>
+            </StackPanel>
+            <Button x:Name="RunBtn" Content="▶  Run All Tests" Click="RunAll_Click"
+                    Background="#1A6FAD" Foreground="White" BorderThickness="0"
+                    Padding="16,8" FontSize="13" Cursor="Hand"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bg" Property="Background" Value="#155A8F"/></Trigger>
+                            <Trigger Property="IsEnabled"   Value="False"><Setter TargetName="bg" Property="Background" Value="#0D2A40"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- Overall progress bar -->
+        <Border Grid.Row="1" Background="#0D1117" BorderBrush="#2D3561" BorderThickness="1"
+                CornerRadius="8" Padding="14,10" Margin="0,0,0,12">
+            <StackPanel>
+                <Grid Margin="0,0,0,6">
+                    <TextBlock x:Name="OverallLabel" Text="Press 'Run All Tests' to start"
+                               Foreground="#9FA8C0" FontSize="12"/>
+                    <TextBlock x:Name="OverallPct" Text="" Foreground="#4FA3E0"
+                               FontSize="12" HorizontalAlignment="Right"/>
+                </Grid>
+                <ProgressBar x:Name="OverallBar" Height="6" Maximum="100" Value="0"
+                             Background="#2D3561" Foreground="#4FA3E0" BorderThickness="0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Test result cards -->
+        <StackPanel Grid.Row="2">
+
+            <!-- CPU Integer -->
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="🖥" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="CPU Integer" Foreground="#E8EAF6" FontSize="13" FontWeight="Medium"/>
+                        <TextBlock Text="Prime sieve · 5 second run" Foreground="#9FA8C0" FontSize="11"/>
+                        <ProgressBar x:Name="IntBar" Height="5" Maximum="100" Value="0"
+                                     Background="#2D3561" Foreground="#4FA3E0"
+                                     BorderThickness="0" Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock x:Name="IntScore" Text="—" Foreground="#4FA3E0"
+                                   FontSize="22" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="IntUnit"  Text="ops/s" Foreground="#4A5568"
+                                   FontSize="11" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="IntRating" Text="" Foreground="#28C840"
+                                   FontSize="12" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- CPU Float -->
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="📐" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="CPU Floating-Point" Foreground="#E8EAF6" FontSize="13" FontWeight="Medium"/>
+                        <TextBlock Text="Math-heavy loop · 5 second run" Foreground="#9FA8C0" FontSize="11"/>
+                        <ProgressBar x:Name="FloatBar" Height="5" Maximum="100" Value="0"
+                                     Background="#2D3561" Foreground="#FEBC2E"
+                                     BorderThickness="0" Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock x:Name="FloatScore"  Text="—"      Foreground="#FEBC2E" FontSize="22" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="FloatUnit"   Text="ops/s"  Foreground="#4A5568" FontSize="11" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="FloatRating" Text=""       Foreground="#28C840" FontSize="12" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Multi-thread -->
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="⚙" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="CPU Multi-Thread" Foreground="#E8EAF6" FontSize="13" FontWeight="Medium"/>
+                        <TextBlock x:Name="ThreadDesc" Text="All cores · 5 second run" Foreground="#9FA8C0" FontSize="11"/>
+                        <ProgressBar x:Name="MTBar" Height="5" Maximum="100" Value="0"
+                                     Background="#2D3561" Foreground="#28C840"
+                                     BorderThickness="0" Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock x:Name="MTScore"  Text="—"     Foreground="#28C840" FontSize="22" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="MTUnit"   Text="ops/s" Foreground="#4A5568" FontSize="11" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="MTRating" Text=""      Foreground="#28C840" FontSize="12" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- RAM Bandwidth -->
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="💾" FontSize="24" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="RAM Bandwidth" Foreground="#E8EAF6" FontSize="13" FontWeight="Medium"/>
+                        <TextBlock Text="256 MB sequential read + write" Foreground="#9FA8C0" FontSize="11"/>
+                        <ProgressBar x:Name="RamBwBar" Height="5" Maximum="100" Value="0"
+                                     Background="#2D3561" Foreground="#AA7FFF"
+                                     BorderThickness="0" Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock x:Name="RamBwScore"  Text="—"    Foreground="#AA7FFF" FontSize="22" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="RamBwUnit"   Text="GB/s" Foreground="#4A5568" FontSize="11" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="RamBwRating" Text=""     Foreground="#28C840" FontSize="12" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <!-- Status -->
+        <TextBlock x:Name="StatusText" Grid.Row="3"
+                   Text="Ready — each test takes ~5 seconds."
+                   Foreground="#4A5568" FontSize="11" Margin="0,8,0,0"/>
+    </Grid>
+</Window>

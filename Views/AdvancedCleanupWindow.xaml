@@ -1,0 +1,176 @@
+<Window x:Class="PCBooster.Views.AdvancedCleanupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Advanced Cleanup — PC Booster Pro"
+        Height="600" Width="760"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="16"/>
+            <Setter Property="Margin"          Value="0,0,0,10"/>
+        </Style>
+        <Style x:Key="CatCheck" TargetType="CheckBox">
+            <Setter Property="Foreground"   Value="#E8EAF6"/>
+            <Setter Property="FontSize"     Value="13"/>
+            <Setter Property="FontWeight"   Value="Medium"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="CatDesc" TargetType="TextBlock">
+            <Setter Property="Foreground"  Value="#9FA8C0"/>
+            <Setter Property="FontSize"    Value="11"/>
+            <Setter Property="Margin"      Value="24,2,0,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+            <TextBlock Text="🧹" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock Text="Advanced Cleanup" Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                <TextBlock Text="Select categories and run a deep system clean"
+                           Foreground="#9FA8C0" FontSize="12"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Categories -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Temp & Junk -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="🗂  JUNK FILES" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,10"/>
+                        <CheckBox x:Name="TempCheck"   Content="Temp Files (%TEMP%, LocalAppData\Temp)"  Style="{StaticResource CatCheck}" IsChecked="True" Margin="0,0,0,2"/>
+                        <TextBlock Text="Removes leftover installer and application temp files" Style="{StaticResource CatDesc}" Margin="0,0,0,8"/>
+                        <CheckBox x:Name="PrefetchCheck" Content="Prefetch Cache (Windows\Prefetch\*.pf)" Style="{StaticResource CatCheck}" IsChecked="True" Margin="0,0,0,2"/>
+                        <TextBlock Text="Clears prefetch data (Windows will rebuild on next boot)" Style="{StaticResource CatDesc}" Margin="0,0,0,8"/>
+                        <CheckBox x:Name="ThumbCheck"  Content="Thumbnail Cache (Explorer thumbcache_*.db)" Style="{StaticResource CatCheck}" IsChecked="True" Margin="0,0,0,2"/>
+                        <TextBlock Text="Frees space from cached image/video thumbnails" Style="{StaticResource CatDesc}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Windows System -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="🪟  WINDOWS SYSTEM" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,10"/>
+                        <CheckBox x:Name="WinUpdateCheck" Content="Windows Update Cache (SoftwareDistribution\Download)" Style="{StaticResource CatCheck}" IsChecked="False" Margin="0,0,0,2"/>
+                        <TextBlock Text="Stops WU service, deletes downloaded update files, restarts service" Style="{StaticResource CatDesc}" Margin="0,0,0,8"/>
+                        <CheckBox x:Name="ErrorReportCheck" Content="Windows Error Reports (WER\ReportArchive)" Style="{StaticResource CatCheck}" IsChecked="True" Margin="0,0,0,2"/>
+                        <TextBlock Text="Deletes crash/error diagnostic reports" Style="{StaticResource CatDesc}" Margin="0,0,0,8"/>
+                        <CheckBox x:Name="EventLogCheck" Content="Event Logs (Application, System, Security, Setup)" Style="{StaticResource CatCheck}" IsChecked="False" Margin="0,0,0,2"/>
+                        <TextBlock Text="Clears Windows event log entries (useful before sharing PC)" Style="{StaticResource CatDesc}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Storage -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="💾  STORAGE" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,10"/>
+                        <CheckBox x:Name="RecycleBinCheck" Content="Empty Recycle Bin" Style="{StaticResource CatCheck}" IsChecked="True" Margin="0,0,0,2"/>
+                        <TextBlock Text="Permanently deletes all items in the Recycle Bin" Style="{StaticResource CatDesc}" Margin="0,0,0,8"/>
+                        <CheckBox x:Name="DnsCheck" Content="Flush DNS Cache" Style="{StaticResource CatCheck}" IsChecked="True" Margin="0,0,0,2"/>
+                        <TextBlock Text="Clears DNS resolver cache (fixes some browsing issues)" Style="{StaticResource CatDesc}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Registry -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="🔧  REGISTRY" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,10"/>
+                        <CheckBox x:Name="RegistryCheck" Content="Remove Orphaned Uninstall Keys" Style="{StaticResource CatCheck}" IsChecked="False" Margin="0,0,0,2"/>
+                        <TextBlock Text="Deletes uninstall registry entries with no DisplayName (safe remnants only)" Style="{StaticResource CatDesc}"/>
+                        <Border Background="#2D1F0A" BorderBrush="#5C3D12" BorderThickness="1"
+                                CornerRadius="6" Padding="10,7" Margin="0,8,0,0">
+                            <TextBlock Text="⚠  Registry changes are permanent. A restore point is recommended before cleaning."
+                                       Foreground="#FEBC2E" FontSize="11" TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Progress -->
+        <Border Grid.Row="2" Background="#0D1117" BorderBrush="#2D3561" BorderThickness="1"
+                CornerRadius="8" Padding="14,10" Margin="0,0,0,10">
+            <StackPanel>
+                <Grid Margin="0,0,0,6">
+                    <TextBlock x:Name="ProgressLabel" Text="Ready to clean"
+                               Foreground="#9FA8C0" FontSize="12"/>
+                    <TextBlock x:Name="ResultLabel" Text="" Foreground="#28C840"
+                               FontSize="12" HorizontalAlignment="Right"/>
+                </Grid>
+                <ProgressBar x:Name="CleanProgress" Height="6" Maximum="100" Value="0"
+                             Background="#2D3561" Foreground="#4FA3E0" BorderThickness="0"/>
+                <ScrollViewer Height="60" Margin="0,8,0,0" VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="LogText" Foreground="#4A5568" FontSize="11"
+                               TextWrapping="Wrap" FontFamily="Consolas"/>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+
+        <!-- Action buttons -->
+        <Grid Grid.Row="3">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="☑  Select All"  Click="SelectAll_Click"
+                        Background="#1E2A4A" Foreground="#9FA8C0" BorderBrush="#2D3561"
+                        BorderThickness="1" Padding="12,7" FontSize="12" Cursor="Hand" Margin="0,0,8,0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bg" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bg" Property="Background" Value="#1A3560"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Content="☐  Clear All" Click="ClearAll_Click"
+                        Background="#1E2A4A" Foreground="#9FA8C0" BorderBrush="#2D3561"
+                        BorderThickness="1" Padding="12,7" FontSize="12" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bg" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bg" Property="Background" Value="#1A3560"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+            <Button x:Name="RunBtn" Content="🧹  Run Cleanup" Click="RunCleanup_Click"
+                    Background="#1A6FAD" Foreground="White" BorderThickness="0"
+                    Padding="22,9" FontSize="13" Cursor="Hand" HorizontalAlignment="Right">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bg" Property="Background" Value="#155A8F"/></Trigger>
+                            <Trigger Property="IsEnabled" Value="False"><Setter TargetName="bg" Property="Background" Value="#0D2A40"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

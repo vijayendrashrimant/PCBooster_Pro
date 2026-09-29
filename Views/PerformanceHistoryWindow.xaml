@@ -1,0 +1,134 @@
+<Window x:Class="PCBooster.Views.PerformanceHistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Performance History — PC Booster Pro"
+        Height="580" Width="860"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanResize"
+        MinWidth="640" MinHeight="420">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="16"/>
+        </Style>
+        <Style x:Key="StatCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+            <TextBlock Text="📈" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock Text="Performance History" Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                <TextBlock x:Name="SubLabel" Text="7-day system performance log"
+                           Foreground="#9FA8C0" FontSize="12"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
+                <Rectangle Width="14" Height="3" Fill="#4FA3E0" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <TextBlock Text="CPU" Foreground="#9FA8C0" FontSize="11" Margin="0,0,12,0"/>
+                <Rectangle Width="14" Height="3" Fill="#28C840" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <TextBlock Text="RAM" Foreground="#9FA8C0" FontSize="11"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Summary stat tiles -->
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource StatCard}">
+                <StackPanel>
+                    <TextBlock Text="AVG CPU" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="AvgCpuStat" Text="—" Foreground="#4FA3E0" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="today" Foreground="#4A5568" FontSize="10"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource StatCard}">
+                <StackPanel>
+                    <TextBlock Text="PEAK CPU" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="PeakCpuStat" Text="—" Foreground="#FF5F57" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="today" Foreground="#4A5568" FontSize="10"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource StatCard}">
+                <StackPanel>
+                    <TextBlock Text="AVG RAM" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="AvgRamStat" Text="—" Foreground="#28C840" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="today" Foreground="#4A5568" FontSize="10"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource StatCard}">
+                <StackPanel>
+                    <TextBlock Text="BEST SCORE" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="BestScoreStat" Text="—" Foreground="#FEBC2E" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="7 days" Foreground="#4A5568" FontSize="10"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="4" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="BOOSTS RUN" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="BoostsStat" Text="—" Foreground="#AA7FFF" FontSize="22" FontWeight="Bold"/>
+                    <TextBlock Text="7 days" Foreground="#4A5568" FontSize="10"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Charts row -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 7-day bar chart -->
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="7-Day CPU &amp; RAM Average"
+                               Foreground="#E8EAF6" FontSize="13" FontWeight="Medium" Margin="0,0,0,12"/>
+                    <Canvas x:Name="BarChartCanvas" Grid.Row="1" ClipToBounds="True"/>
+                </Grid>
+            </Border>
+
+            <!-- Live last-hour line graph -->
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Live — Last 60 Snapshots"
+                               Foreground="#E8EAF6" FontSize="13" FontWeight="Medium" Margin="0,0,0,12"/>
+                    <Canvas x:Name="LiveChartCanvas" Grid.Row="1" ClipToBounds="True"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Status -->
+        <TextBlock x:Name="StatusText" Grid.Row="3"
+                   Text="Loading history…" Foreground="#4A5568"
+                   FontSize="11" Margin="0,10,0,0"/>
+    </Grid>
+</Window>

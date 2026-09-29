@@ -1,0 +1,255 @@
+<Window x:Class="PCBooster.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings — PC Booster Pro"
+        Height="600" Width="680"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="18"/>
+            <Setter Property="Margin"          Value="0,0,0,12"/>
+        </Style>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="Foreground"  Value="#9FA8C0"/>
+            <Setter Property="FontSize"    Value="10"/>
+            <Setter Property="FontWeight"  Value="Medium"/>
+            <Setter Property="Margin"      Value="0,0,0,14"/>
+        </Style>
+        <Style x:Key="SettingRow" TargetType="Grid">
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+        <Style x:Key="ToggleStyle" TargetType="CheckBox">
+            <Setter Property="Foreground"    Value="#E8EAF6"/>
+            <Setter Property="FontSize"      Value="13"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+            <TextBlock Text="⚙" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock Text="Settings" Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                <TextBlock Text="Configure PC Booster Pro behaviour"
+                           Foreground="#9FA8C0" FontSize="12"/>
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Monitoring -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="📊  MONITORING" Style="{StaticResource SectionTitle}"/>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Metrics Poll Rate" Foreground="#E8EAF6" FontSize="13"/>
+                                <TextBlock Text="How often CPU/RAM is sampled" Foreground="#9FA8C0" FontSize="11"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Slider x:Name="PollSlider" Minimum="1" Maximum="10" Value="2"
+                                        Width="120" TickFrequency="1" IsSnapToTickEnabled="True"
+                                        Foreground="#4FA3E0" ValueChanged="PollSlider_Changed"/>
+                                <TextBlock x:Name="PollLabel" Text="2s"
+                                           Foreground="#E8EAF6" FontSize="12"
+                                           Margin="8,0,0,0" VerticalAlignment="Center" Width="30"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <CheckBox x:Name="ShowTempCheck" Content="Show Temperature tile on dashboard"
+                                      Style="{StaticResource ToggleStyle}" IsChecked="True"/>
+                        </Grid>
+                        <Grid Style="{StaticResource SettingRow}">
+                            <CheckBox x:Name="ShowDiskCheck" Content="Show Disk Usage tile on dashboard"
+                                      Style="{StaticResource ToggleStyle}" IsChecked="True"/>
+                        </Grid>
+                        <Grid>
+                            <CheckBox x:Name="RecordHistCheck" Content="Record performance history to disk"
+                                      Style="{StaticResource ToggleStyle}" IsChecked="True"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Notifications -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="🔔  NOTIFICATIONS" Style="{StaticResource SectionTitle}"/>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <CheckBox x:Name="NotifyCpuCheck" Content="Alert when CPU usage exceeds threshold"
+                                      Style="{StaticResource ToggleStyle}" IsChecked="True"/>
+                        </Grid>
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="CPU alert threshold" Foreground="#9FA8C0" FontSize="12" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Slider x:Name="CpuThreshSlider" Minimum="50" Maximum="99" Value="85"
+                                        Width="120" TickFrequency="5" IsSnapToTickEnabled="True"
+                                        Foreground="#FF5F57" ValueChanged="ThreshSlider_Changed"/>
+                                <TextBlock x:Name="CpuThreshLabel" Text="85%"
+                                           Foreground="#E8EAF6" FontSize="12" Margin="8,0,0,0"
+                                           VerticalAlignment="Center" Width="36"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <CheckBox x:Name="NotifyRamCheck" Content="Alert when RAM usage exceeds threshold"
+                                      Style="{StaticResource ToggleStyle}" IsChecked="True"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="RAM alert threshold" Foreground="#9FA8C0" FontSize="12" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Slider x:Name="RamThreshSlider" Minimum="50" Maximum="99" Value="90"
+                                        Width="120" TickFrequency="5" IsSnapToTickEnabled="True"
+                                        Foreground="#FF5F57" ValueChanged="ThreshSlider_Changed"/>
+                                <TextBlock x:Name="RamThreshLabel" Text="90%"
+                                           Foreground="#E8EAF6" FontSize="12" Margin="8,0,0,0"
+                                           VerticalAlignment="Center" Width="36"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Startup & Behaviour -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="🚀  STARTUP &amp; BEHAVIOUR" Style="{StaticResource SectionTitle}"/>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <CheckBox x:Name="StartupCheck" Content="Run PC Booster Pro on Windows startup"
+                                      Style="{StaticResource ToggleStyle}"
+                                      Checked="StartupCheck_Changed" Unchecked="StartupCheck_Changed"/>
+                        </Grid>
+                        <Grid Style="{StaticResource SettingRow}">
+                            <CheckBox x:Name="AutoBoostCheck" Content="Auto-boost on startup (run all optimizations)"
+                                      Style="{StaticResource ToggleStyle}"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="History retention" Foreground="#E8EAF6" FontSize="13"/>
+                                <TextBlock Text="Delete snapshots older than N days" Foreground="#9FA8C0" FontSize="11"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Slider x:Name="RetentionSlider" Minimum="1" Maximum="30" Value="7"
+                                        Width="120" TickFrequency="1" IsSnapToTickEnabled="True"
+                                        Foreground="#4FA3E0" ValueChanged="RetentionSlider_Changed"/>
+                                <TextBlock x:Name="RetentionLabel" Text="7 days"
+                                           Foreground="#E8EAF6" FontSize="12" Margin="8,0,0,0"
+                                           VerticalAlignment="Center" Width="50"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Data -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="🗂  DATA" Style="{StaticResource SectionTitle}"/>
+                        <Grid Style="{StaticResource SettingRow}">
+                            <StackPanel>
+                                <TextBlock Text="Data stored in:" Foreground="#9FA8C0" FontSize="12"/>
+                                <TextBlock x:Name="DataPathLabel" Text="—" Foreground="#4FA3E0"
+                                           FontSize="12" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="📂  Open Folder" Click="OpenDataFolder_Click"
+                                    Background="#1E2A4A" Foreground="#9FA8C0" BorderBrush="#2D3561"
+                                    BorderThickness="1" Padding="10,6" FontSize="12" Cursor="Hand" Margin="0,0,8,0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bg" Property="Background" Value="#1A3560"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Content="🗑  Clear History" Click="ClearHistory_Click"
+                                    Background="#3A1010" Foreground="#FF5F57" BorderBrush="#7A1515"
+                                    BorderThickness="1" Padding="10,6" FontSize="12" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bg" Property="Background" Value="#5A1515"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Save button -->
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <TextBlock x:Name="StatusText" Text="" Foreground="#28C840"
+                       FontSize="12" VerticalAlignment="Center"/>
+            <Button Content="💾  Save Settings" Click="Save_Click"
+                    Background="#1A6FAD" Foreground="White" BorderThickness="0"
+                    Padding="20,9" FontSize="13" Cursor="Hand" HorizontalAlignment="Right">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="#155A8F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,170 @@
+<Window x:Class="PCBooster.Views.GpuMonitorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="GPU Monitor — PC Booster Pro"
+        Height="540" Width="820"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanResize"
+        MinWidth="620" MinHeight="380">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="16"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+            <TextBlock Text="🎮" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock x:Name="GpuNameLabel" Text="GPU Monitor"
+                           Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                <TextBlock x:Name="GpuSubLabel" Text="Reading GPU info…"
+                           Foreground="#9FA8C0" FontSize="12"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Top stat tiles -->
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="GPU USAGE" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="UsageVal" Text="—%" Foreground="#AA7FFF"
+                               FontSize="28" FontWeight="Bold"/>
+                    <ProgressBar x:Name="UsageBar" Height="5" Maximum="100" Value="0"
+                                 Background="#2D3561" Foreground="#AA7FFF"
+                                 BorderThickness="0" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="TEMPERATURE" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="TempVal" Text="—°C" Foreground="#FEBC2E"
+                               FontSize="28" FontWeight="Bold"/>
+                    <ProgressBar x:Name="TempBar" Height="5" Maximum="100" Value="0"
+                                 Background="#2D3561" Foreground="#FEBC2E"
+                                 BorderThickness="0" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="4" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="VRAM USED" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="VramVal" Text="— MB" Foreground="#4FA3E0"
+                               FontSize="28" FontWeight="Bold"/>
+                    <TextBlock x:Name="VramTotal" Text="Total: —" Foreground="#4A5568" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="6" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="DISPLAY" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="ResolutionVal" Text="—" Foreground="#28C840"
+                               FontSize="14" FontWeight="Medium" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="DriverVerLabel" Text="Driver: —"
+                               Foreground="#4A5568" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Graph + Specs -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="230"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Live usage graph -->
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="GPU Usage History" Foreground="#E8EAF6"
+                                   FontSize="13" FontWeight="Medium"/>
+                        <TextBlock Text="  last 60 samples" Foreground="#4A5568" FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Canvas x:Name="GpuGraph" Grid.Row="1" ClipToBounds="True"/>
+                </Grid>
+            </Border>
+
+            <!-- GPU specs -->
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="GPU DETAILS" Foreground="#9FA8C0" FontSize="11" Margin="0,0,0,12"/>
+
+                    <Grid Margin="0,0,0,8">
+                        <TextBlock Text="VRAM" Foreground="#9FA8C0" FontSize="12"/>
+                        <TextBlock x:Name="VramSpec" Text="—" Foreground="#E8EAF6"
+                                   FontSize="12" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <TextBlock Text="Refresh Rate" Foreground="#9FA8C0" FontSize="12"/>
+                        <TextBlock x:Name="HzSpec" Text="—" Foreground="#E8EAF6"
+                                   FontSize="12" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <TextBlock Text="Driver Version" Foreground="#9FA8C0" FontSize="12"/>
+                        <TextBlock x:Name="DriverSpec" Text="—" Foreground="#E8EAF6"
+                                   FontSize="12" HorizontalAlignment="Right" TextWrapping="Wrap" MaxWidth="120"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <TextBlock Text="Status" Foreground="#9FA8C0" FontSize="12"/>
+                        <TextBlock x:Name="StatusSpec" Text="—" Foreground="#28C840"
+                                   FontSize="12" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Separator Background="#2D3561" Margin="0,8,0,12"/>
+
+                    <TextBlock Text="TEMPERATURE GUIDE" Foreground="#9FA8C0" FontSize="10" Margin="0,0,0,8"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Rectangle Width="10" Height="10" Fill="#28C840" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="&lt; 60°C — Cool" Foreground="#9FA8C0" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Rectangle Width="10" Height="10" Fill="#FEBC2E" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="60–80°C — Normal" Foreground="#9FA8C0" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="10" Height="10" Fill="#FF5F57" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="&gt; 80°C — Hot" Foreground="#9FA8C0" FontSize="11"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Status -->
+        <TextBlock x:Name="StatusText" Grid.Row="3"
+                   Text="Reading GPU…" Foreground="#4A5568"
+                   FontSize="11" Margin="0,10,0,0"/>
+    </Grid>
+</Window>

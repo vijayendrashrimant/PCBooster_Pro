@@ -1,0 +1,178 @@
+<Window x:Class="PCBooster.Views.PowerPlanWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Power Plan Manager — PC Booster Pro"
+        Height="540" Width="760"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <Style x:Key="PlanCard" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="12"/>
+            <Setter Property="Padding"         Value="18"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+        </Style>
+        <Style x:Key="ActivePlanCard" TargetType="Border" BasedOn="{StaticResource PlanCard}">
+            <Setter Property="BorderBrush"     Value="#4FA3E0"/>
+            <Setter Property="Background"      Value="#0F2A45"/>
+        </Style>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="16"/>
+        </Style>
+        <Style x:Key="ActionBtn" TargetType="Button">
+            <Setter Property="Background"      Value="#1E2A4A"/>
+            <Setter Property="Foreground"      Value="#9FA8C0"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding"         Value="0,9"/>
+            <Setter Property="FontSize"        Value="12"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="#1A3560"/>
+                                <Setter TargetName="bg" Property="BorderBrush" Value="#4FA3E0"/>
+                                <Setter Property="Foreground"                  Value="#4FA3E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+            <TextBlock Text="⚡" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <StackPanel>
+                <TextBlock Text="Power Plan Manager" Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                <TextBlock x:Name="ActivePlanLabel" Text="Reading active plan…"
+                           Foreground="#9FA8C0" FontSize="12"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Plan Cards -->
+        <StackPanel x:Name="PlansPanel" Grid.Row="1"
+                    Orientation="Horizontal" Margin="0,0,0,14"/>
+
+        <!-- Bottom row: Sleep settings + Actions -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="220"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sleep timeout settings -->
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Sleep Timeouts" Foreground="#E8EAF6"
+                               FontSize="13" FontWeight="Medium" Margin="0,0,0,14"/>
+
+                    <TextBlock Text="ON BATTERY — sleep after:" Foreground="#9FA8C0"
+                               FontSize="11" Margin="0,0,0,6"/>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name="BattSleepSlider" Minimum="1" Maximum="60" Value="15"
+                                TickFrequency="5" IsSnapToTickEnabled="True"
+                                Foreground="#4FA3E0"
+                                ValueChanged="SleepSlider_Changed"/>
+                        <TextBlock x:Name="BattSleepLabel" Grid.Column="1"
+                                   Text="15 min" Foreground="#E8EAF6" FontSize="12"
+                                   Margin="10,0,0,0" VerticalAlignment="Center" Width="50"/>
+                    </Grid>
+
+                    <TextBlock Text="PLUGGED IN — sleep after:" Foreground="#9FA8C0"
+                               FontSize="11" Margin="0,0,0,6"/>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name="AcSleepSlider" Minimum="1" Maximum="120" Value="30"
+                                TickFrequency="10" IsSnapToTickEnabled="True"
+                                Foreground="#4FA3E0"
+                                ValueChanged="SleepSlider_Changed"/>
+                        <TextBlock x:Name="AcSleepLabel" Grid.Column="1"
+                                   Text="30 min" Foreground="#E8EAF6" FontSize="12"
+                                   Margin="10,0,0,0" VerticalAlignment="Center" Width="50"/>
+                    </Grid>
+
+                    <Button Content="Apply Sleep Settings" Click="ApplySleep_Click"
+                            Background="#1A6FAD" Foreground="White" BorderThickness="0"
+                            Padding="0,9" Cursor="Hand" FontSize="12" HorizontalAlignment="Left"
+                            Margin="0,4,0,0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                        CornerRadius="6" Padding="16,9">
+                                    <ContentPresenter HorizontalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bg" Property="Background" Value="#155A8F"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <TextBlock x:Name="SleepStatus" Text="" Foreground="#28C840"
+                               FontSize="11" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Quick actions -->
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Actions" Foreground="#E8EAF6"
+                               FontSize="13" FontWeight="Medium" Margin="0,0,0,12"/>
+
+                    <Button Content="📊  Energy Report" Click="EnergyReport_Click"
+                            Style="{StaticResource ActionBtn}" Margin="0,0,0,8"/>
+                    <Button Content="⚙  Power Options" Click="PowerOptions_Click"
+                            Style="{StaticResource ActionBtn}" Margin="0,0,0,8"/>
+                    <Button Content="📋  Export Active Plan" Click="ExportPlan_Click"
+                            Style="{StaticResource ActionBtn}" Margin="0,0,0,8"/>
+                    <Button Content="⏻  Ultimate Performance" Click="UltimatePlan_Click"
+                            Style="{StaticResource ActionBtn}"/>
+
+                    <Separator Background="#2D3561" Margin="0,12"/>
+                    <TextBlock x:Name="ActionStatus" Text=""
+                               Foreground="#9FA8C0" FontSize="11" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Status -->
+        <TextBlock x:Name="StatusText" Grid.Row="3"
+                   Text="Ready" Foreground="#4A5568" FontSize="11" Margin="0,10,0,0"/>
+    </Grid>
+</Window>

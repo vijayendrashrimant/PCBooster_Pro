@@ -1,0 +1,148 @@
+<Window x:Class="PCBooster.Views.SystemInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="System Information — PC Booster Pro"
+        Height="620" Width="820"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1A2E"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background"      Value="#16213E"/>
+            <Setter Property="BorderBrush"     Value="#2D3561"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="10"/>
+            <Setter Property="Padding"         Value="16"/>
+            <Setter Property="Margin"          Value="0,0,0,10"/>
+        </Style>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="Foreground"  Value="#9FA8C0"/>
+            <Setter Property="FontSize"    Value="10"/>
+            <Setter Property="FontWeight"  Value="Medium"/>
+            <Setter Property="Margin"      Value="0,0,0,10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,14">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="💻" FontSize="22" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <StackPanel>
+                    <TextBlock x:Name="ComputerNameLabel" Text="System Information"
+                               Foreground="#E8EAF6" FontSize="16" FontWeight="Medium"/>
+                    <TextBlock x:Name="UserLabel" Text="Loading…"
+                               Foreground="#9FA8C0" FontSize="12"/>
+                </StackPanel>
+            </StackPanel>
+            <Button Content="📋  Copy Report" Click="CopyReport_Click"
+                    Background="#1E2A4A" Foreground="#9FA8C0" BorderBrush="#2D3561"
+                    BorderThickness="1" Padding="12,6" FontSize="12" Cursor="Hand"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="#1A3560"/>
+                                <Setter TargetName="bg" Property="BorderBrush" Value="#4FA3E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- Two-column layout -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left column -->
+                <StackPanel Grid.Column="0">
+
+                    <!-- OS -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="🪟  OPERATING SYSTEM" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="OsPanel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- CPU -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="🖥  PROCESSOR" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="CpuPanel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- RAM -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="💾  MEMORY" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="RamPanel"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Right column -->
+                <StackPanel Grid.Column="2">
+
+                    <!-- GPU -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="🎮  GRAPHICS" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="GpuPanel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Motherboard -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="🔧  MOTHERBOARD &amp; BIOS" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="MoboPanel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Storage -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="💿  STORAGE" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="StoragePanel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Network -->
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="🌐  NETWORK" Style="{StaticResource SectionTitle}"/>
+                            <StackPanel x:Name="NetworkPanel"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Status -->
+        <TextBlock x:Name="StatusText" Grid.Row="2"
+                   Text="Loading system info…" Foreground="#4A5568"
+                   FontSize="11" Margin="0,10,0,0"/>
+    </Grid>
+</Window>
